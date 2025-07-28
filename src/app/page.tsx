@@ -10,6 +10,8 @@ import ApplicationLayout from "@/components/application/ApplicationLayout";
 
 export default function Home() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
 
   const handleNext = () => {
     if (currentStep < 4) {
@@ -23,6 +25,10 @@ export default function Home() {
     }
   };
 
+  const handleFileSelect = (file: File | null) => {
+      setUploadedFile(file);
+  };
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 1:
@@ -30,9 +36,9 @@ export default function Home() {
       case 2:
         return <StepTwo />;
       case 3:
-        return <StepThree />;
+        return <StepThree onFileSelect={handleFileSelect} />;
       case 4:
-        return <StepFour />;
+        return <StepFour onFileSelect={handleFileSelect} />;
       default:
         return <StepOne />;
     }
