@@ -55,6 +55,7 @@ export default function MediaUploader({ onFileSelect }: MediaUploaderProps) {
         Upload File
       </label>
 
+
       <input
         id="file-upload"
         type="file"
