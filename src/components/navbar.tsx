@@ -11,7 +11,7 @@ export const Navbar = () => {
         <Link href="/" className="flex items-center gap-4">
           <div className="flex items-center gap-4">
             <Image
-              src="/beaver.png/"
+              src="/images/beaver.png"
               width={40}
               height={40}
               className="w-10 h-10 sm:w-12 sm:h-12"
@@ -77,6 +77,11 @@ export const Navbar = () => {
       </div>
 
       <div className="flex gap-2 md:gap-4">
+        <Link href="/dashboard">
+          <Button variant="outline" className="bg-orange-500 hover:bg-orange-600 text-white">
+            Log-in
+          </Button>
+        </Link>
         <Button variant="outline" className="hidden md:block">
           About
         </Button>

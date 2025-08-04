@@ -1,4 +1,4 @@
-import MediaUploader from '@/components/MediaUploader';
+import MediaUploader from '@/components/application/MediaUploader';
 
 interface StepFourProps {
   onFileSelect: (file: File | null) => void;
