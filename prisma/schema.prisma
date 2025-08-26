@@ -18,17 +18,21 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  nextProfile   NextProfile?
+
   @@unique([email])
   @@map("user")
 }
 
 model NextProfile {
-  id            String    @id
-  name          String
-  email         String
-
-  @@unique([email])
-  @@map("nextprofile")
+  id     String @id
+  name   String
+  email  String
+  userId String @unique
+  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("next_profile")
 }
 
 model Session {

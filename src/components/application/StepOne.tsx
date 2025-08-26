@@ -20,13 +20,7 @@ export const StepOne = () => {
     console.log('API call initiated with email:', email);
 
     try {
-        const response = await fetch('/api/getName', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email }),
-        });
+        const response = await fetch(`/api/user?email=${encodeURIComponent(email)}`);
 
         const data = await response.json();
         console.log('API response:', data)
