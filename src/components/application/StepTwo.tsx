@@ -1,43 +1,97 @@
-export const StepTwo = () => {
+import { useForm } from "react-hook-form";
+import { projectSchema } from "@/features/projectform/schema";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useEffect } from "react";
+
+const projectFormSchema = projectSchema.pick({
+  projectName: true,
+  projectDescription: true,
+});
+
+type ProjectFormSchema = z.infer<typeof projectFormSchema>;
+
+interface StepTwoProps {
+  projectName: string;
+  projectDescription: string;
+  onProjectNameChange: (projectName: string) => void;
+  onProjectDescriptionChange: (projectDescription: string) => void;
+}
+
+export function StepTwo({
+  projectName,
+  projectDescription,
+  onProjectNameChange,
+  onProjectDescriptionChange,
+}: StepTwoProps) {
+  const form = useForm<ProjectFormSchema>({
+    resolver: zodResolver(projectFormSchema),
+    defaultValues: {
+      projectName,
+      projectDescription,
+    },
+  });
+
+  useEffect(() => {
+    form.reset({
+      projectName,
+      projectDescription,
+    });
+  }, [projectName, projectDescription, form]);
+
+  const handleFormChange = () => {
+    const values = form.getValues();
+    onProjectNameChange(values.projectName);
+    onProjectDescriptionChange(values.projectDescription);
+  };
+
   return (
     <div className="pt-60 px-8 max-w-2xl mx-auto w-full">
       <h2 className="text-white-3xl font-bold mb-2 text-left">
         2 → Enter your project information
       </h2>
-      <p className="text-gray-600 mb-8 pl-8 text-left">Title and Description</p>
-      {/* Form Title and Description */}
-      <form className="text-white-600 mb-8 pl-8 text-left">
-        <div>
-          <label
-            htmlFor="projectName"
-            className="block mb-2 text-white-3xl font-bold dark:text-white"
-          >
-            Project Title
-          </label>
-          <input
-            type="text"
-            id="projectTitle"
-            className="block w-half p-2 text-gray-600 border border-gray-300 rounded-lg bg-gray-50
-            focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-500 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Project Title..."
+      <Form {...form}>
+        <form onChange={handleFormChange} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="projectName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project Title</FormLabel>
+                <FormControl>
+                  <Input placeholder="Project Title..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        <br />
-        <div>
-          <label
-            htmlFor="projectDescription"
-            className="block mb-2 text-white-3xl font-bold dark:text-white"
-          >
-            Project Desciption
-          </label>
-          <input
-            type="text"
-            id="projectDescription"
-            className="block w-full p-4 text-gray-600 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-500 dark:placeholder-gray-500 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Project Description..."
+          <FormField
+            control={form.control}
+            name="projectDescription"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Project Description..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   );
-};
+}
