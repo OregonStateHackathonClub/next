@@ -18,21 +18,64 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
-  nextProfile   NextProfile?
+  nextProfile NextProfile?
 
   @@unique([email])
   @@map("user")
 }
 
 model NextProfile {
-  id     String @id
-  name   String
-  email  String
+  id    String @id @default(cuid())
+  name  String
+  email String
+
   userId String @unique
-  
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
+  nextTeamId String?
+  NextTeam   NextTeam? @relation(fields: [nextTeamId], references: [id])
+
+  ProjectAttachments ProjectAttachments[]
+
   @@map("next_profile")
+}
+
+model NextTeam {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members NextProfile[]
+  project NextProject[]
+
+  @@map("next_team")
+}
+
+model NextProject {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+
+  nextTeamId String
+  team       NextTeam @relation(fields: [nextTeamId], references: [id], onDelete: Cascade)
+
+  attachments ProjectAttachments[]
+
+  @@map("next_project")
+}
+
+model ProjectAttachments {
+  id   String @id @default(cuid())
+  name String
+  type String @default("pdf")
+  size Bytes?
+
+  projectId String
+  project   NextProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  uploadedById String
+  uploadedBy   NextProfile @relation(fields: [uploadedById], references: [id])
 }
 
 model Session {

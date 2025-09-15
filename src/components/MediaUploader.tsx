@@ -1,5 +1,5 @@
-import { useState, ChangeEvent } from 'react';
-import { Upload, X } from "lucide-react"; 
+import { useState, ChangeEvent } from "react";
+import { Upload, X } from "lucide-react";
 
 interface MediaUploaderProps {
   onFileSelect?: (file: File | null) => void;
@@ -8,23 +8,22 @@ interface MediaUploaderProps {
 export default function MediaUploader({ onFileSelect }: MediaUploaderProps) {
   const [preview, setPreview] = useState<string | null>(null);
 
-
-  function uploadFile(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-    })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log("Upload success:", data);
-        })
-        .catch((err) => {
-            console.error("Upload failed:", err);
-        });
-  }
+  // function uploadFile(file: File) {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
+  //
+  //   fetch("/api/upload", {
+  //       method: "POST",
+  //       body: formData,
+  //   })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //           console.log("Upload success:", data);
+  //       })
+  //       .catch((err) => {
+  //           console.error("Upload failed:", err);
+  //       });
+  // }
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -55,7 +54,6 @@ export default function MediaUploader({ onFileSelect }: MediaUploaderProps) {
         Upload File
       </label>
 
-
       <input
         id="file-upload"
         type="file"
@@ -68,19 +66,19 @@ export default function MediaUploader({ onFileSelect }: MediaUploaderProps) {
         <div className="relative w-fit">
           <a href={preview} target="_blank" rel="noopener noreferrer">
             {isVideo ? (
-                <video
+              <video
                 src={preview}
                 width={300}
                 controls
-                style={{ borderRadius: 8, cursor: 'pointer' }}
-                />
+                style={{ borderRadius: 8, cursor: "pointer" }}
+              />
             ) : (
-                <img
+              <img
                 src={preview}
                 alt="Preview"
                 width={300}
-                style={{ borderRadius: 8, cursor: 'pointer' }}
-                />
+                style={{ borderRadius: 8, cursor: "pointer" }}
+              />
             )}
           </a>
           <button
